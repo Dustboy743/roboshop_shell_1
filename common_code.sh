@@ -7,7 +7,7 @@ current_directory=$PWD  #to get the current working directory
 log_folder="/var/log/roboshop_logs"   #create a folder
 file_name=$(echo $0 | cut -d "." -f1) #to extract the name
 log_name="$log_folder/$file_name.log"
-user=$(id -u)  #to get user ID
+user=$(id -u) 
 
 mkdir -p $log_folder #create a log folder
 
