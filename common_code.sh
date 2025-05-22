@@ -36,7 +36,7 @@ VALIDATION()
     fi    
 }
 
-ROBOSHOP_USER
+ROBOSHOP_USER()
 {
     id roboshop
     if [ $? -ne 0 ]
@@ -56,7 +56,7 @@ ROBOSHOP_USER
     unzip /tmp/$appname.zip &>> $log_name
 }
 
-NODEJS_INSTALL
+NODEJS_INSTALL()
 {   
     dnf module disable nodejs -y &>> $log_name
     VALIDATION $? "Disabling nodejs"
@@ -71,7 +71,7 @@ NODEJS_INSTALL
     VALIDATION $? "Installing package"
 }
 
-DAEMON_RELOAD
+DAEMON_RELOAD()
 {
     cp $current_directory/$appname.service /etc/systemd/system/$appname.service &>> $log_name
     VALIDATION $? "copying $appname service"
