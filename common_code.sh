@@ -48,7 +48,7 @@ ROBOSHOP_USER
     fi    
 
     mkdir -p /app &>> $log_name
-    curl -o /tmp/$application.zip https://roboshop-artifacts.s3.amazonaws.com/$application-v3.zip &>> $log_name
+    curl -o /tmp/$application.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $log_name
     VALIDATION $? "\Downloading $application"
 
     rm -rf /app/*  #removing because if we run the script 2nd time we again paste it

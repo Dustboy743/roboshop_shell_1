@@ -1,10 +1,10 @@
 #!/bin/bash
 source ./common_code.sh
-application="catalogue"
+application=catalogue
 
 ROOT_CHECK
 ROBOSHOP_USER
-NODEJS_INSTALL 
+NODEJS_INSTALL
 DAEMON_RELOAD
 
 cp $current_directory/mongo.repo /etc/yum.repos.d/mongo.repo
