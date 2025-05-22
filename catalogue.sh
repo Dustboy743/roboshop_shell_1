@@ -1,6 +1,6 @@
 #!/bin/bash
 source ./common_code.sh
-application=catalogue
+appname=catalogue
 
 ROOT_CHECK
 ROBOSHOP_USER

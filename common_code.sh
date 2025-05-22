@@ -48,16 +48,16 @@ ROBOSHOP_USER
     fi    
 
     mkdir -p /app &>> $log_name
-    curl -o /tmp/$application.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $log_name
-    VALIDATION $? "\Downloading $application"
+    curl -o /tmp/$appname.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $log_name
+    VALIDATION $? "\Downloading $appname"
 
     rm -rf /app/*  #removing because if we run the script 2nd time we again paste it
     cd /app 
-    unzip /tmp/$application.zip &>> $log_name
+    unzip /tmp/$appname.zip &>> $log_name
 }
 
 NODEJS_INSTALL
-{
+{   
     dnf module disable nodejs -y &>> $log_name
     VALIDATION $? "Disabling nodejs"
 
@@ -73,17 +73,17 @@ NODEJS_INSTALL
 
 DAEMON_RELOAD
 {
-    cp $current_directory/$application.service /etc/systemd/system/$application.service &>> $log_name
-    VALIDATION $? "copying $application service"
+    cp $current_directory/$appname.service /etc/systemd/system/$appname.service &>> $log_name
+    VALIDATION $? "copying $appname service"
     
     systemctl daemon-reload &>> $log_name
     VALIDATION $? "systmctl daemon-reload"
 
-    systemctl enable $application &>> $log_name
-    VALIDATION $? "Enabling $application"
+    systemctl enable $appname &>> $log_name
+    VALIDATION $? "Enabling $appname"
 
-    systemctl start $application &>> $log_name
-    VALIDATION $? "Starting $application"
+    systemctl start $appname &>> $log_name
+    VALIDATION $? "Starting $appname"
 }
 
 SYSTEMCTL()
