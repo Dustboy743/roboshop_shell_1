@@ -36,33 +36,6 @@ VALIDATION()
     fi    
 }
 
-NODEJS_INSTALL
-{
-    dnf module disable nodejs -y &>> $log_name
-    VALIDATION $? "Disabling nodejs"
-
-    dnf module enable nodejs:20 -y &>> $log_name
-    VALIDATION $? "enabling nodejs:20"
-
-    dnf install nodejs -y &>> $log_name
-    VALIDATION $? "Installing nodejs"
-
-    npm install | tee -a $log_name
-    VALIDATION $? "Installing package"
-}
-
-SYSTEMCTL()
-{
-    dnf install $install_app -y &>> $log_name
-    VALIDATION $? "$install_app installation"
-
-    systemctl enable $service &>> $log_name
-    VALIDATION $? "Enabling $service"
-
-    systemctl start $service &>> $log_name
-    VALIDATION $? "Starting $service" 
-}
-
 ROBOSHOP_USER
 {
     id roboshop
@@ -83,6 +56,21 @@ ROBOSHOP_USER
     unzip /tmp/$application.zip &>> $log_name
 }
 
+NODEJS_INSTALL
+{
+    dnf module disable nodejs -y &>> $log_name
+    VALIDATION $? "Disabling nodejs"
+
+    dnf module enable nodejs:20 -y &>> $log_name
+    VALIDATION $? "enabling nodejs:20"
+
+    dnf install nodejs -y &>> $log_name
+    VALIDATION $? "Installing nodejs"
+
+    npm install | tee -a $log_name
+    VALIDATION $? "Installing package"
+}
+
 DAEMON_RELOAD
 {
     cp $current_directory/$application.service /etc/systemd/system/$application.service &>> $log_name
@@ -98,7 +86,14 @@ DAEMON_RELOAD
     VALIDATION $? "Starting $application"
 }
 
-UNZIPPING
+SYSTEMCTL()
 {
+    dnf install $install_app -y &>> $log_name
+    VALIDATION $? "$install_app installation"
 
+    systemctl enable $service &>> $log_name
+    VALIDATION $? "Enabling $service"
+
+    systemctl start $service &>> $log_name
+    VALIDATION $? "Starting $service" 
 }
