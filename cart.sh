@@ -59,6 +59,7 @@ VALIDATION $? "Downloading cart"
 rm -rf /app/*  #removing because if we run the script 2nd time we again paste it
 cd /app 
 unzip /tmp/cart.zip &>> $log_name
+
 npm install | tee -a $log_name
 VALIDATION $? "Installing package"
 

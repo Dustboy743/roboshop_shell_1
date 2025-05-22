@@ -45,12 +45,13 @@ else
     echo "user already created"
 fi
 
-mkdir /app 
+mkdir -p /app 
 
 rm -rf /app/*
 curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip &>> $log_name
 cd /app 
 unzip /tmp/payment.zip &>> $log_name
+
 VALIDATION $? "unzipping"
 
 pip3 install -r requirements.txt &>> $log_name

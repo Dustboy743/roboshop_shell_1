@@ -36,6 +36,21 @@ VALIDATION()
     fi    
 }
 
+NODEJS_INSTALL
+{
+    dnf module disable nodejs -y &>> $log_name
+    VALIDATION $? "Disabling nodejs"
+
+    dnf module enable nodejs:20 -y &>> $log_name
+    VALIDATION $? "enabling nodejs:20"
+
+    dnf install nodejs -y &>> $log_name
+    VALIDATION $? "Installing nodejs"
+
+    npm install | tee -a $log_name
+    VALIDATION $? "Installing package"
+}
+
 SYSTEMCTL()
 {
     dnf install $install_app -y &>> $log_name
@@ -46,4 +61,44 @@ SYSTEMCTL()
 
     systemctl start $service &>> $log_name
     VALIDATION $? "Starting $service" 
+}
+
+ROBOSHOP_USER
+{
+    id roboshop
+    if [ $? -ne 0 ]
+    then
+        useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_name
+        VALIDATION $? "useradd"
+    else
+        echo -e "System user roboshop already created ... $yellow SKIPPING $normal"
+    fi    
+
+    mkdir -p /app &>> $log_name
+    curl -o /tmp/$application.zip https://roboshop-artifacts.s3.amazonaws.com/$application-v3.zip &>> $log_name
+    VALIDATION $? "\Downloading $application"
+
+    rm -rf /app/*  #removing because if we run the script 2nd time we again paste it
+    cd /app 
+    unzip /tmp/$application.zip &>> $log_name
+}
+
+DAEMON_RELOAD
+{
+    cp $current_directory/$application.service /etc/systemd/system/$application.service &>> $log_name
+    VALIDATION $? "copying $application service"
+    
+    systemctl daemon-reload &>> $log_name
+    VALIDATION $? "systmctl daemon-reload"
+
+    systemctl enable $application &>> $log_name
+    VALIDATION $? "Enabling $application"
+
+    systemctl start $application &>> $log_name
+    VALIDATION $? "Starting $application"
+}
+
+UNZIPPING
+{
+
 }
