@@ -2,6 +2,7 @@
 source ./common_code.sh
 appname="frontend"
 install_app="nginx"
+service="nginx"
 
 ROOT_CHECK
 
